@@ -110,6 +110,11 @@
     background: var(--accent-soft); border: 1px solid #f6cfc5; color: #9c3a28;
     border-radius: 12px; padding: 12px 14px; font-size: 13.5px; margin: 14px 0 4px; line-height: 1.5; font-weight: 500;
   }
+  .history {
+    background: #eef3f8; border: 1px solid #d7e2ee; color: #3d5a7a;
+    border-radius: 12px; padding: 12px 14px; font-size: 13.5px; margin: 14px 0 0; line-height: 1.5;
+    display: none;
+  }
   .checkrow { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; margin: 12px 0 18px; }
   .checkrow input { margin-top: 3px; }
   .formerr { color: var(--red-ink); font-size: 13.5px; min-height: 18px; margin-bottom: 8px; font-weight: 600; }
@@ -239,12 +244,9 @@
       <div class="sub" id="rSub"></div>
       <label class="f">Your full name</label>
       <input class="f" id="rName" placeholder="e.g. Alex Smith">
-      <label class="f">How many?</label>
-      <input class="f" id="rQty" type="number" min="1" value="1">
-      <div id="rReasonWrap" style="display:none">
-        <label class="f">Why do you need this many? <span style="color:var(--accent)">(required for orders of 4+)</span></label>
-        <textarea class="f" id="rReason" rows="3" placeholder="Tell us why you need a large order…"></textarea>
-      </div>
+      <label class="f">How many? <span style="color:var(--muted);font-weight:500">(max 3)</span></label>
+      <input class="f" id="rQty" type="number" min="1" max="3" value="1">
+      <div class="history" id="rHist"></div>
       <div class="disclaimer">💰 <b>Bring the exact amount requested.</b> If you don't bring the correct money, a <b>ban</b> will be placed on your account and you will no longer be able to order.</div>
       <div class="pickup" id="rPickup"></div>
       <div class="checkrow">
@@ -252,7 +254,7 @@
         <span><label for="rAgree">I understand I must bring the exact amount, or I will be banned from ordering.</label></span>
       </div>
       <div class="formerr" id="rErr"></div>
-      <button class="btn primary" style="width:100%" onclick="submitRequest()">Send request</button>
+      <button class="btn primary" style="width:100%" id="rSend" onclick="submitRequest()">Send request</button>
     </div>
     <div class="formcard success" id="requestDone" style="display:none">
       <div class="big">✅</div>
@@ -272,8 +274,9 @@
       <input class="f" id="sName" placeholder="e.g. Alex Smith">
       <label class="f">What snack do you want?</label>
       <input class="f" id="sWant" placeholder="e.g. Haribo Starmix">
-      <label class="f">How many?</label>
-      <input class="f" id="sQty" type="number" min="1" value="1">
+      <label class="f">How many? <span style="color:var(--muted);font-weight:500">(max 3)</span></label>
+      <input class="f" id="sQty" type="number" min="1" max="3" value="1">
+      <div class="history" id="sHist"></div>
       <div class="disclaimer">💰 <b>Bring the exact amount requested.</b> If you don't bring the correct money, a <b>ban</b> will be placed on your account. We'll tell you the price before you pay.</div>
       <div class="pickup" id="sPickup"></div>
       <div class="checkrow">
@@ -281,7 +284,7 @@
         <span><label for="sAgree">I understand I must bring the exact amount, or I will be banned from ordering.</label></span>
       </div>
       <div class="formerr" id="sErr"></div>
-      <button class="btn primary" style="width:100%" onclick="submitSpecial()">Send special request</button>
+      <button class="btn primary" style="width:100%" id="sSend" onclick="submitSpecial()">Send special request</button>
     </div>
     <div class="formcard success" id="specialDone" style="display:none">
       <div class="big">✅</div>
@@ -297,8 +300,9 @@
 
     <div class="tabs">
       <button id="tab-orders" class="on" onclick="adminTab('orders')">🍬 Orders</button>
-      <button id="tab-products" onclick="adminTab('products')">🍭 Products</button>
+      <button id="tab-products" onclick="adminTab('products')">🍫 Products</button>
       <button id="tab-text" onclick="adminTab('text')">📝 Page text</button>
+      <button id="tab-bans" onclick="adminTab('bans')">🚫 Bans</button>
     </div>
 
     <div class="adminpanel active" id="apOrders">
@@ -321,6 +325,20 @@
       <div class="savemsg" id="prodMsg"></div>
       <div style="color:var(--muted);font-size:12.5px;margin-top:10px;line-height:1.6">
         💡 <b>Photos:</b> paste any image link into the Photo column (upload a photo to <b>imgur.com</b> and use the direct link ending in .jpg/.png). Leave blank for a 🍬 placeholder. Untick Visible to hide a snack without deleting it.
+      </div>
+    </div>
+
+    <div class="adminpanel" id="apBans">
+      <h3>Bans</h3>
+      <div style="color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:14px">
+        Banned pupils can't order. The easiest way is the <b>🚫 button on any order</b> in the Orders tab — it bans that pupil's name <b>and</b> their device.
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+        <input class="f" id="banName" placeholder="Ban by full name…" style="flex:1;min-width:160px">
+        <button class="btn ghost small" onclick="addBanName()">🚫 Ban name</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="otable" id="bansTable"></table>
       </div>
     </div>
 
@@ -356,7 +374,7 @@
 </div>
 
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzzPMOpqczkUBrS25GekWcG9YkrtEgd6z8lvy5QcnxrndmgTkh6kRF3nZO-sb3yw/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqcq6QjLg4oC-FZaX5GGiZkxOT5Wu1icjUFVJXG_GR-OMlx-MXTk-uuOquy12gOtuK/exec";
 
   const $ = id => document.getElementById(id);
   let products = [];
@@ -369,7 +387,35 @@
     $("view-" + name).classList.add("active");
     if (name === "request") $("rPickup").textContent = "📍 " + (settings.pickup_note || "");
     if (name === "special") $("sPickup").textContent = "📍 " + (settings.pickup_note || "");
+    if (name === "request" || name === "special") loadHistory();
     window.scrollTo({ top: 0 });
+  }
+
+  function deviceId() {
+    let d = "";
+    try { d = localStorage.getItem("pp_did") || ""; } catch (e) {}
+    if (!d) {
+      d = "d" + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+      try { localStorage.setItem("pp_did", d); } catch (e) {}
+    }
+    return d;
+  }
+
+  async function loadHistory() {
+    try {
+      const res = await apiGet("action=history&deviceId=" + encodeURIComponent(deviceId()));
+      const todays = (res.orders || []).filter(o => o.today);
+      const text = todays.length
+        ? "👀 You've already requested today: " + todays.map(o => o.qty + "× " + o.product).join(", ") + ". Limit is 3 per person per day."
+        : "";
+      ["rHist", "sHist"].forEach(id => {
+        const el = $(id);
+        el.style.display = (text || res.banned) ? "block" : "none";
+        el.textContent = res.banned ? "🚫 This device has been banned from ordering." : text;
+      });
+      $("rSend").disabled = !!res.banned;
+      $("sSend").disabled = !!res.banned;
+    } catch (e) {}
   }
 
   function showShop() { show("shop"); }
@@ -438,21 +484,15 @@
     show("product");
   }
 
-  $("rQty").addEventListener("input", () => {
-    const q = Number($("rQty").value) || 0;
-    $("rReasonWrap").style.display = q > 3 ? "block" : "none";
-  });
-
   function submitRequest() {
     const name = $("rName").value.trim();
     const qty = Number($("rQty").value);
-    const reason = $("rReason").value.trim();
     $("rErr").textContent = "";
     if (!name) { $("rErr").textContent = "Please enter your full name."; return; }
     if (!qty || qty < 1) { $("rErr").textContent = "Please enter how many you want."; return; }
-    if (qty > 3 && !reason) { $("rErr").textContent = "Orders of 4+ need a reason — tell us why you need this many."; return; }
+    if (qty > 3) { $("rErr").textContent = "Maximum 3 per order."; return; }
     if (!$("rAgree").checked) { $("rErr").textContent = "Please tick the disclaimer box."; return; }
-    sendOrder({ action: "order", name, qty, reason, productId: currentProduct.id });
+    sendOrder({ action: "order", name, qty, productId: currentProduct.id, deviceId: deviceId() });
   }
 
   function submitSpecial() {
@@ -464,7 +504,7 @@
     if (!want) { $("sErr").textContent = "Tell us what snack you want."; return; }
     if (!qty || qty < 1) { $("sErr").textContent = "Please enter how many you want."; return; }
     if (!$("sAgree").checked) { $("sErr").textContent = "Please tick the disclaimer box."; return; }
-    sendOrder({ action: "order", name, qty, product: want, special: true });
+    sendOrder({ action: "order", name, qty, product: want, special: true, deviceId: deviceId() });
   }
 
   async function sendOrder(payload) {
@@ -482,9 +522,8 @@
       if (!isSpecial && res.total) {
         $("rDoneText").innerHTML = "Your request for <b>" + esc(payload.name) + "</b> has been sent.<br><b>Bring £" + res.total + "</b> with you — exact amount, or no snacks!";
       }
-      $("rName").value = ""; $("rQty").value = 1; $("rReason").value = ""; $("rAgree").checked = false;
+      $("rName").value = ""; $("rQty").value = 1; $("rAgree").checked = false;
       $("sName").value = ""; $("sWant").value = ""; $("sQty").value = 1; $("sAgree").checked = false;
-      $("rReasonWrap").style.display = "none";
     } catch (e) {
       errEl.textContent = "Could not send — check your connection and try again.";
     } finally {
@@ -503,7 +542,7 @@
   $("adminPass").addEventListener("keydown", e => { if (e.key === "Enter") adminLogin(); });
 
   function adminTab(name) {
-    ["orders", "products", "text"].forEach(t => {
+    ["orders", "products", "text", "bans"].forEach(t => {
       $("tab-" + t).classList.toggle("on", t === name);
       $("ap" + t.charAt(0).toUpperCase() + t.slice(1)).classList.toggle("active", t === name);
     });
@@ -521,6 +560,7 @@
       $("adminBtn").style.display = "none";
       renderShop();
       renderOrders(res.orders);
+      renderBans(res.bans || []);
       renderProductsEditor();
       $("setNote").value = settings.pickup_note || "";
       $("setSlogan").value = settings.slogan || "";
@@ -536,19 +576,63 @@
     show("shop");
   }
 
+  let adminOrders = [];
+  let adminBans = [];
+
   function renderOrders(orders) {
+    adminOrders = orders || [];
     const t = $("ordersTable");
-    if (!orders || !orders.length) {
+    if (!adminOrders.length) {
       t.innerHTML = '<tr><td style="color:var(--muted)">No orders yet.</td></tr>';
       return;
     }
-    let html = "<tr><th>Time</th><th>Name</th><th>Product</th><th>Qty</th><th>Total</th><th>Notes</th></tr>";
-    orders.slice().reverse().forEach(o => {
+    let html = "<tr><th>Time</th><th>Name</th><th>Product</th><th>Qty</th><th>Total</th><th>Notes</th><th></th></tr>";
+    for (let i = adminOrders.length - 1; i >= 0; i--) {
+      const o = adminOrders[i];
       html += "<tr><td>" + esc(o.time) + "</td><td><b>" + esc(o.name) + "</b></td><td>" + esc(o.product) +
         (o.special ? ' <span class="special">SPECIAL</span>' : "") + "</td><td>" + esc(o.qty) + "</td><td>£" +
-        esc(o.total) + "</td><td>" + esc(o.reason || "") + "</td></tr>";
+        esc(o.total) + "</td><td>" + esc(o.reason || "") +
+        '</td><td><button class="btn ghost small" title="Ban this pupil and their device" onclick="banOrder(' + i + ')">🚫</button></td></tr>';
+    }
+    t.innerHTML = html;
+  }
+
+  function renderBans(bans) {
+    adminBans = bans || [];
+    const t = $("bansTable");
+    if (!adminBans.length) {
+      t.innerHTML = '<tr><td style="color:var(--muted)">No bans yet.</td></tr>';
+      return;
+    }
+    let html = "<tr><th>Type</th><th>Value</th><th>Since</th><th></th></tr>";
+    adminBans.forEach(b => {
+      html += "<tr><td>" + (b.type === "device" ? "📱 device" : "👤 name") + "</td><td>" + esc(b.value) +
+        '</td><td>' + esc(b.time || "") + '</td><td><button class="btn ghost small" onclick="removeBan(\'' + esc(b.value).replace(/'/g, "\\'") + '\')">✕</button></td></tr>';
     });
     t.innerHTML = html;
+  }
+
+  async function banOrder(i) {
+    const o = adminOrders[i];
+    if (!o) return;
+    if (!confirm("Ban " + o.name + " AND this device from ordering?")) return;
+    await apiPost({ action: "admin", password: $("adminPass").value, op: "ban_add", type: "name", value: o.name });
+    if (o.device) await apiPost({ action: "admin", password: $("adminPass").value, op: "ban_add", type: "device", value: o.device });
+    await loadAdmin();
+    adminTab("bans");
+  }
+
+  async function addBanName() {
+    const v = $("banName").value.trim();
+    if (!v) return;
+    await apiPost({ action: "admin", password: $("adminPass").value, op: "ban_add", type: "name", value: v });
+    $("banName").value = "";
+    await loadAdmin();
+  }
+
+  async function removeBan(value) {
+    await apiPost({ action: "admin", password: $("adminPass").value, op: "ban_remove", value: value });
+    await loadAdmin();
   }
 
   function renderProductsEditor() {
@@ -612,6 +696,7 @@
     products = res.products;
     settings = res.settings;
     renderOrders(res.orders);
+    renderBans(res.bans || []);
     renderProductsEditor();
     $("setNote").value = settings.pickup_note || "";
     $("setSlogan").value = settings.slogan || "";
