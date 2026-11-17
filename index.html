@@ -48,9 +48,12 @@
   }
   .btn.primary { background: var(--accent); color: #fff; box-shadow: 0 4px 14px rgba(232,84,63,0.35); }
   .btn.primary:hover { background: var(--accent-dark); }
+  .btn.primary:disabled { opacity: 0.6; cursor: default; }
   .btn.ghost { background: none; border: 1.5px solid var(--line); color: var(--muted); }
   .btn.ghost:hover { color: var(--ink); border-color: #d8cfc2; }
+  .btn.ghost:disabled { opacity: 0.6; cursor: default; }
   .btn.small { padding: 7px 12px; font-size: 13px; border-radius: 10px; }
+  .btn.small svg { vertical-align: -2px; }
 
   h2.section { font-size: 20px; letter-spacing: -0.3px; margin: 26px 0 14px; }
 
@@ -60,7 +63,7 @@
     overflow: hidden; cursor: pointer; transition: all .15s ease; box-shadow: var(--shadow);
   }
   .card:hover { transform: translateY(-3px); box-shadow: 0 4px 8px rgba(35,32,28,0.06), 0 14px 34px rgba(35,32,28,0.12); }
-  .card .ph { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 44px; background: linear-gradient(135deg, #fdeae6, #fdf3e7); }
+  .card .ph { height: 140px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #fdeae6, #fdf3e7); }
   .card img { width: 100%; height: 140px; object-fit: cover; display: block; }
   .card .info { padding: 12px 14px 14px; display: flex; align-items: center; gap: 8px; }
   .card .info b { flex: 1; font-size: 14.5px; }
@@ -74,7 +77,7 @@
   @media (max-width: 760px) { .detail { grid-template-columns: 1fr; } }
   .detail .photo {
     border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line);
-    height: 300px; display: flex; align-items: center; justify-content: center; font-size: 90px;
+    height: 300px; display: flex; align-items: center; justify-content: center;
     background: linear-gradient(135deg, #fdeae6, #fdf3e7); box-shadow: var(--shadow);
   }
   .detail .photo img { width: 100%; height: 100%; object-fit: cover; }
@@ -120,7 +123,7 @@
   .checkrow input { margin-top: 3px; }
   .formerr { color: var(--red-ink); font-size: 13.5px; min-height: 18px; margin-bottom: 8px; font-weight: 600; }
   .success { text-align: center; padding: 30px 10px; }
-  .success .big { font-size: 46px; margin-bottom: 10px; }
+  .success .big { margin-bottom: 10px; }
   .success h2 { margin-bottom: 8px; }
   .success p { color: var(--muted); font-size: 14.5px; line-height: 1.6; }
 
@@ -208,31 +211,31 @@
 <div class="wrap">
 
   <div class="setupwarn" id="setupWarn">
-    <b>⚠ Setup needed:</b> this site isn't connected to its Google Sheet backend yet.
+    <b>Setup needed:</b> this site isn't connected to its Google Sheet backend yet.
     Follow the setup steps to create the Sheet + Apps Script, then the site owner pastes the Web App URL into the site file (line <b>SCRIPT_URL</b>).
   </div>
 
   <!-- SIGN IN / SIGN UP -->
   <div class="view" id="view-auth">
     <div class="formcard" id="authCard">
-      <h1 id="authTitle">Welcome 🍬</h1>
+      <h1 id="authTitle">Welcome</h1>
       <div class="sub" id="authSub">Sign in to request snacks.</div>
       <div id="upFields" style="display:none">
         <label class="f">Your full name</label>
         <input class="f" id="aName" placeholder="e.g. Alex Smith">
         <label class="f">Year group</label>
         <select class="f" id="aYear">
-          <option value="">Choose…</option>
+          <option value="">Choose...</option>
           <option>Fifth Form</option>
-<option>Lower Shell</option>
-<option>Upper Shell</option>
-<option>Sixth Form</option>
-<option>Remove</option>
+          <option>Lower Shell</option>
+          <option>Upper Shell</option>
+          <option>Sixth Form</option>
+          <option>Remove</option>
         </select>
       </div>
       <div id="codeFields" style="display:none">
         <label class="f">Verification code (we emailed it to you)</label>
-        <input class="f" id="aCode" placeholder="6-digit code" inputmode="numeric" autocomplete="one-time-code">
+        <input class="f" id="aCode" placeholder="6-digit code" inputmode="numeric" autocomplete="one-time-code" maxlength="6">
       </div>
       <label class="f" id="emailLabel">Email</label>
       <input class="f" id="aEmail" type="email" placeholder="you@example.com" autocomplete="email">
@@ -250,26 +253,26 @@
   <!-- SHOP -->
   <div class="view active" id="view-shop">
     <h2 class="section">Snacks for sale</h2>
-    <div class="grid" id="productGrid"></div>
+    <div class="grid" id="productGrid"><div style="color:var(--muted);font-size:14px;grid-column:1/-1;padding:20px 0">Loading...</div></div>
     <h2 class="section">Want something else?</h2>
     <div style="background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-      <div style="font-size:34px">📝</div>
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><rect x="5" y="3.5" width="14" height="17" rx="2.5" stroke="#c9bfb2" stroke-width="1.6"/><path d="M9 9h6M9 12.5h6M9 16h3.5" stroke="#c9bfb2" stroke-width="1.6" stroke-linecap="round"/></svg>
       <div style="flex:1;min-width:200px">
         <b>Special request</b>
-        <div style="color:var(--muted);font-size:13.5px;margin-top:2px">Craving a snack we don't stock? Ask us — we'll try to get it in.</div>
+        <div style="color:var(--muted);font-size:13.5px;margin-top:2px">Craving a snack we don't stock? Ask us - we'll try to get it in.</div>
       </div>
       <button class="btn primary" onclick="showSpecial()">Make a special request</button>
     </div>
-    <h2 class="section">🏆 Leaderboard</h2>
+    <h2 class="section">Leaderboard</h2>
     <div class="lbcard">
-      <div class="sub">Every order you place and <b>pay for</b> earns points (1 point per £1). Highest at the end of the season wins the prize!</div>
+      <div class="sub">Every order you place and <b>pay for</b> earns points (1 point per &pound;1). Highest at the end of the season wins the prize!</div>
       <div style="overflow-x:auto"><table class="otable" id="lbTable"></table></div>
     </div>
   </div>
 
   <!-- PRODUCT DETAIL -->
   <div class="view" id="view-product">
-    <div class="back"><button class="btn ghost small" onclick="show('shop')">← Back to shop</button></div>
+    <div class="back"><button class="btn ghost small" onclick="show('shop')">&larr; Back to shop</button></div>
     <div class="detail">
       <div class="photo" id="dPhoto"></div>
       <div>
@@ -280,7 +283,10 @@
           <h3>Allergens</h3>
           <div class="chips" id="dAllergens"></div>
         </div>
-        <div class="redbox">⚠️ <span>Allergies are listed above. <u>Make sure you are not allergic to any of these ingredients</u> before requesting this product.</span></div>
+        <div class="redbox">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;margin-top:1px"><path d="M10 2.5L1.8 16.5h16.4L10 2.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 8v3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="14.3" r="0.9" fill="currentColor"/></svg>
+          <span>Allergies are listed above. <u>Make sure you are not allergic to any of these ingredients</u> before requesting this product.</span>
+        </div>
         <button class="btn primary" id="dRequestBtn" onclick="show('request')">Request snacks</button>
       </div>
     </div>
@@ -288,15 +294,15 @@
 
   <!-- REQUEST FORM -->
   <div class="view" id="view-request">
-    <div class="back"><button class="btn ghost small" onclick="show('product')">← Back to product</button></div>
+    <div class="back"><button class="btn ghost small" onclick="show('product')">&larr; Back to product</button></div>
     <div class="formcard" id="requestCard">
       <h1>Request snacks</h1>
       <div class="sub" id="rSub"></div>
       <div class="history" id="rAs" style="display:block"></div>
-      <label class="f">How many? <span style="color:var(--muted);font-weight:500">(max 3)</span></label>
+      <label class="f">How many? <span style="color:var(--muted);font-weight:500" id="rMaxLab">(max 3)</span></label>
       <input class="f" id="rQty" type="number" min="1" max="3" value="1">
       <div class="history" id="rHist"></div>
-      <div class="disclaimer">💰 <b>Bring the exact amount requested.</b> If you don't bring the correct money, a <b>ban</b> will be placed on your account and you will no longer be able to order.</div>
+      <div class="disclaimer"><b>Bring the exact amount requested.</b> If you don't bring the correct money, a <b>ban</b> will be placed on your account and you will no longer be able to order.</div>
       <div class="pickup" id="rPickup"></div>
       <div class="checkrow">
         <input type="checkbox" id="rAgree">
@@ -306,7 +312,7 @@
       <button class="btn primary" style="width:100%" id="rSend" onclick="submitRequest()">Send request</button>
     </div>
     <div class="formcard success" id="requestDone" style="display:none">
-      <div class="big">✅</div>
+      <div class="big"><svg width="52" height="52" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" stroke="#2e9e5b" stroke-width="1.8"/><path d="M7.5 12.5l3 3 6-6.5" stroke="#2e9e5b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2>Request sent!</h2>
       <p id="rDoneText"></p>
       <button class="btn primary" style="margin-top:18px" onclick="show('shop')">Back to shop</button>
@@ -315,17 +321,17 @@
 
   <!-- SPECIAL REQUEST -->
   <div class="view" id="view-special">
-    <div class="back"><button class="btn ghost small" onclick="show('shop')">← Back to shop</button></div>
+    <div class="back"><button class="btn ghost small" onclick="show('shop')">&larr; Back to shop</button></div>
     <div class="formcard" id="specialCard">
-      <h1>Special request 📝</h1>
+      <h1>Special request</h1>
       <div class="sub">Want a snack that isn't listed? Tell us and we'll try to stock it.</div>
       <div class="history" id="sAs" style="display:block"></div>
       <label class="f">What snack do you want?</label>
       <input class="f" id="sWant" placeholder="e.g. Haribo Starmix">
-      <label class="f">How many? <span style="color:var(--muted);font-weight:500">(max 3)</span></label>
+      <label class="f">How many? <span style="color:var(--muted);font-weight:500" id="sMaxLab">(max 3)</span></label>
       <input class="f" id="sQty" type="number" min="1" max="3" value="1">
       <div class="history" id="sHist"></div>
-      <div class="disclaimer">💰 <b>Bring the exact amount requested.</b> If you don't bring the correct money, a <b>ban</b> will be placed on your account. We'll tell you the price before you pay.</div>
+      <div class="disclaimer"><b>Bring the exact amount requested.</b> If you don't bring the correct money, a <b>ban</b> will be placed on your account. We'll tell you the price before you pay.</div>
       <div class="pickup" id="sPickup"></div>
       <div class="checkrow">
         <input type="checkbox" id="sAgree">
@@ -335,55 +341,56 @@
       <button class="btn primary" style="width:100%" id="sSend" onclick="submitSpecial()">Send special request</button>
     </div>
     <div class="formcard success" id="specialDone" style="display:none">
-      <div class="big">✅</div>
+      <div class="big"><svg width="52" height="52" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10.5" stroke="#2e9e5b" stroke-width="1.8"/><path d="M7.5 12.5l3 3 6-6.5" stroke="#2e9e5b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2>Request sent!</h2>
-      <p>We'll let you know if we can get it — watch this space!</p>
+      <p>We'll let you know if we can get it - watch this space!</p>
       <button class="btn primary" style="margin-top:18px" onclick="show('shop')">Back to shop</button>
     </div>
   </div>
 
   <!-- ADMIN AREA -->
   <div class="view" id="view-admin">
-    <div class="back"><button class="btn ghost small" onclick="adminLogout()">← Exit admin — back to shop</button></div>
+    <div class="back"><button class="btn ghost small" onclick="adminLogout()">&larr; Exit admin - back to shop</button></div>
 
     <div class="tabs">
-      <button id="tab-orders" class="on" onclick="adminTab('orders')">🍬 Orders</button>
-      <button id="tab-products" onclick="adminTab('products')">🍭 Products</button>
-      <button id="tab-text" onclick="adminTab('text')">📝 Page text</button>
-      <button id="tab-bans" onclick="adminTab('bans')">🚫 Bans</button>
-      <button id="tab-accounts" onclick="adminTab('accounts')">🎒 Accounts</button>
+      <button id="tab-orders" class="on" onclick="adminTab('orders')">Orders</button>
+      <button id="tab-products" onclick="adminTab('products')">Products</button>
+      <button id="tab-text" onclick="adminTab('text')">Page text</button>
+      <button id="tab-bans" onclick="adminTab('bans')">Bans</button>
+      <button id="tab-accounts" onclick="adminTab('accounts')">Accounts</button>
+      <button id="tab-limits" onclick="adminTab('limits')">Limits</button>
     </div>
 
     <div class="adminpanel active" id="apOrders">
-      <h3>⏳ Pending <span class="countpill" id="pendingCount">0</span></h3>
+      <h3>Pending <span class="countpill" id="pendingCount">0</span></h3>
       <div style="overflow-x:auto"><table class="otable" id="pendingTable"></table></div>
-      <h3 style="margin-top:24px">✅ Completed <span class="countpill" id="doneCount" style="background:#e5f5eb;color:var(--green)">0</span></h3>
+      <h3 style="margin-top:24px">Completed <span class="countpill" id="doneCount" style="background:#e5f5eb;color:var(--green)">0</span></h3>
       <div style="overflow-x:auto"><table class="otable" id="doneTable"></table></div>
       <div style="color:var(--muted);font-size:12.5px;margin-top:12px;line-height:1.6">
-        ✅ marks an order as paid &amp; completed and gives the pupil their leaderboard points. 🗑️ deletes it. 🚫 bans that pupil (name + device + account) for the length set in the Bans tab.
+        The green tick marks an order as paid &amp; completed and gives the pupil their leaderboard points. The bin deletes it. The crossed circle bans that pupil (name + device + account) for the length set in the Bans tab.
       </div>
     </div>
 
     <div class="adminpanel" id="apProducts">
-      <h3>Products — edit any box, then press Save products</h3>
+      <h3>Products - edit any box, then press Save products</h3>
       <div style="overflow-x:auto">
         <table class="ptable" id="productsTable"></table>
       </div>
       <div class="adminactions">
-        <button class="btn ghost small" onclick="addProductRow()">＋ Add product</button>
-        <button class="btn primary" onclick="saveProducts()">💾 Save products</button>
-        <button class="btn ghost small" onclick="loadAdmin()">↻ Reload</button>
+        <button class="btn ghost small" onclick="addProductRow()">Add product</button>
+        <button class="btn primary" onclick="saveProducts()">Save products</button>
+        <button class="btn ghost small" onclick="loadAdmin()">Reload</button>
       </div>
       <div class="savemsg" id="prodMsg"></div>
       <div style="color:var(--muted);font-size:12.5px;margin-top:10px;line-height:1.6">
-        💡 <b>Photos:</b> paste any image link into the Photo column (upload a photo to <b>imgur.com</b> and use the direct link ending in .jpg/.png). Leave blank for a 🍬 placeholder. Untick Visible to hide a snack without deleting it.
+        <b>Photos:</b> paste any image link into the Photo column (upload a photo to <b>imgur.com</b> and use the direct link ending in .jpg or .png). Leave blank for a drawn placeholder. Untick Visible to hide a snack without deleting it.
       </div>
     </div>
 
     <div class="adminpanel" id="apBans">
       <h3>Bans</h3>
       <div style="color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:14px">
-        The <b>ban length</b> you pick here applies to every 🚫 button too (Orders and Accounts tabs).
+        The <b>ban length</b> you pick here applies to every Ban button too (Orders and Accounts tabs).
       </div>
       <div class="setrow">
         <label>Ban length</label>
@@ -401,8 +408,8 @@
           <option value="device">Device</option>
           <option value="account">Account email</option>
         </select>
-        <input class="f" id="banValue" placeholder="Value to ban…" style="flex:1;min-width:160px">
-        <button class="btn ghost small" onclick="addBan()">🚫 Ban</button>
+        <input class="f" id="banValue" placeholder="Value to ban..." style="flex:1;min-width:160px">
+        <button class="btn ghost small" onclick="addBan()">Ban</button>
       </div>
       <div style="overflow-x:auto">
         <table class="otable" id="bansTable"></table>
@@ -415,16 +422,29 @@
         <table class="otable" id="accountsTable"></table>
       </div>
       <div class="adminactions">
-        <button class="btn primary" onclick="newSeason()">🏆 Start new season (reset all points)</button>
-        <button class="btn ghost small" onclick="loadAdmin()">↻ Reload</button>
+        <button class="btn primary" onclick="newSeason()">Start new season (reset all points)</button>
+        <button class="btn ghost small" onclick="loadAdmin()">Reload</button>
       </div>
       <div style="color:var(--muted);font-size:12.5px;margin-top:10px;line-height:1.6">
-        🏆 Use "Start new season" when you hand out the prize — every account's points go back to 0.
+        Use "Start new season" when you hand out the prize - every account's points go back to 0.
+      </div>
+    </div>
+
+    <div class="adminpanel" id="apLimits">
+      <h3>Daily limits</h3>
+      <div style="color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:14px">
+        How many snacks each pupil has requested <b>today</b> (the limit is 3 per person per day, counting every order under their account or name). If someone's request failed or they made a mistake, press <b>Reset</b> to give them a fresh limit for today.
+      </div>
+      <div style="overflow-x:auto">
+        <table class="otable" id="limitsTable"></table>
+      </div>
+      <div class="adminactions">
+        <button class="btn ghost small" onclick="loadAdmin()">Reload</button>
       </div>
     </div>
 
     <div class="adminpanel" id="apText">
-      <h3>Page text — shown to everyone</h3>
+      <h3>Page text - shown to everyone</h3>
       <div class="setrow">
         <label>Pickup note (shown on the request forms)</label>
         <input id="setNote" placeholder="Pick up sweets tomorrow in the Sanctuary at 8:00 AM.">
@@ -433,17 +453,17 @@
         <label>Slogan</label>
         <input id="setSlogan" placeholder="made by pupils, for pupils">
       </div>
-      <button class="btn primary" onclick="saveSettings()">💾 Save text</button>
+      <button class="btn primary" onclick="saveSettings()">Save text</button>
       <div class="savemsg" id="setMsg"></div>
     </div>
   </div>
 
-  <footer>The Pupil Pantry — made by pupils, for pupils</footer>
+  <footer>The Pupil Pantry - made by pupils, for pupils</footer>
 </div>
 
 <div class="modalbg" id="adminModal">
   <div class="modal">
-    <h3>🔐 Admin</h3>
+    <h3>Admin</h3>
     <div class="msub">Enter the admin password.</div>
     <input class="f" type="password" id="adminPass" placeholder="Admin password" autocomplete="off">
     <div class="formerr" id="adminErr"></div>
@@ -461,9 +481,17 @@
   let products = [];
   let settings = {};
   let leaders = [];
+  let limitsInfo = { perOrder: 3, perDay: 3 };
   let currentProduct = null;
   let isAdmin = false;
   let me = null;
+
+  const IC = {
+    done: '<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3.2L13 5" stroke="#2e9e5b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    del: '<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2.5 4.2h11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M5.8 4V2.6h4.4V4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.2 4.4l.7 9h6.2l.7-9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    ban: '<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.8" stroke="currentColor" stroke-width="1.5"/><path d="M4 12L12 4" stroke="currentColor" stroke-width="1.5"/></svg>',
+    sweet: '<svg width="56" height="56" viewBox="0 0 64 64" fill="none"><rect x="14" y="18" width="36" height="38" rx="6" fill="#f0d9ce"/><rect x="11" y="10" width="42" height="10" rx="4" fill="#e0b8a8"/><circle cx="26" cy="34" r="5" fill="#ffd9a8"/><circle cx="38" cy="31" r="4" fill="#fff3e0"/><circle cx="33" cy="42" r="5" fill="#ffb3a0"/><circle cx="24" cy="47" r="4" fill="#fff3e0"/><circle cx="40" cy="47" r="4" fill="#ffd9a8"/></svg>'
+  };
 
   function getAuth() {
     try { return JSON.parse(localStorage.getItem("pp_auth") || "null"); } catch (e) { return null; }
@@ -485,17 +513,29 @@
     return !!(me && me.bannedUntil && new Date(me.bannedUntil) > new Date());
   }
 
+  function busy(btn, on, label) {
+    if (!btn) return;
+    if (on) {
+      btn.dataset.txt = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = label || "Sending...";
+    } else {
+      btn.textContent = btn.dataset.txt || btn.textContent;
+      btn.disabled = false;
+    }
+  }
+
   function show(name) {
     if ((name === "request" || name === "special") && !me) name = "auth";
     document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
     $("view-" + name).classList.add("active");
     if (name === "request") {
-      $("rPickup").textContent = "📍 " + (settings.pickup_note || "");
-      $("rAs").textContent = "👤 Ordering as: " + me.name + " (" + me.year + ")";
+      $("rPickup").textContent = settings.pickup_note || "";
+      $("rAs").textContent = "Ordering as: " + me.name + " (" + me.year + ")";
     }
     if (name === "special") {
-      $("sPickup").textContent = "📍 " + (settings.pickup_note || "");
-      $("sAs").textContent = "👤 Ordering as: " + me.name + " (" + me.year + ")";
+      $("sPickup").textContent = settings.pickup_note || "";
+      $("sAs").textContent = "Ordering as: " + me.name + " (" + me.year + ")";
     }
     if (name === "request" || name === "special") loadHistory();
     window.scrollTo({ top: 0 });
@@ -519,11 +559,19 @@
 
   function photoEl(p) {
     if (p.photo) return '<img src="' + p.photo.replace(/"/g, "&quot;") + '" alt="' + p.name.replace(/"/g, "&quot;") + '">';
-    return "🍬";
+    return IC.sweet;
   }
 
   function esc(s) {
     return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function applyLimitsLabels() {
+    const lab = "(max " + limitsInfo.perOrder + ")";
+    $("rMaxLab").textContent = lab;
+    $("sMaxLab").textContent = lab;
+    $("rQty").max = limitsInfo.perOrder;
+    $("sQty").max = limitsInfo.perOrder;
   }
 
   function renderShop() {
@@ -537,23 +585,24 @@
       const c = document.createElement("div");
       c.className = "card";
       c.innerHTML = '<div class="ph">' + photoEl(p) + '</div>' +
-        '<div class="info"><b>' + esc(p.name) + '</b><span class="price">£' + p.price.toFixed(2) + "</span></div>";
+        '<div class="info"><b>' + esc(p.name) + '</b><span class="price">&pound;' + p.price.toFixed(2) + "</span></div>";
       c.addEventListener("click", () => openProduct(p));
       grid.appendChild(c);
     });
     if (settings.slogan) $("sloganText").textContent = settings.slogan;
+    applyLimitsLabels();
   }
 
   function renderLeaderboard() {
     const t = $("lbTable");
     if (!leaders.length) {
-      t.innerHTML = '<tr><td style="color:var(--muted)">No points yet — order, pay, and climb the board!</td></tr>';
+      t.innerHTML = '<tr><td style="color:var(--muted)">No points yet - order, pay, and climb the board!</td></tr>';
       return;
     }
     let html = "<tr><th>#</th><th>Name</th><th>Year</th><th>Points</th></tr>";
     leaders.forEach((a, i) => {
-      const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : String(i + 1);
-      html += "<tr><td>" + medal + "</td><td><b>" + esc(a.name) + "</b></td><td>" + esc(a.year) + "</td><td><b>" + a.points + "</b></td></tr>";
+      const rank = i === 0 ? "1st" : i === 1 ? "2nd" : i === 2 ? "3rd" : (i + 1) + "th";
+      html += "<tr><td>" + rank + "</td><td><b>" + esc(a.name) + "</b></td><td>" + esc(a.year) + "</td><td><b>" + a.points + "</b></td></tr>";
     });
     t.innerHTML = html;
   }
@@ -578,8 +627,8 @@
         chips.appendChild(c);
       });
     }
-    $("dRequestBtn").textContent = "Request snacks · £" + p.price.toFixed(2) + " each";
-    $("rSub").textContent = p.name + " · £" + p.price.toFixed(2) + " each";
+    $("dRequestBtn").textContent = "Request snacks - £" + p.price.toFixed(2) + " each";
+    $("rSub").textContent = p.name + " - £" + p.price.toFixed(2) + " each";
     show("product");
   }
 
@@ -589,12 +638,12 @@
       const res = await apiGet("action=history&deviceId=" + encodeURIComponent(deviceId()));
       const todays = (res.orders || []).filter(o => o.today);
       const text = todays.length
-        ? "👀 You've already requested today: " + todays.map(o => o.qty + "× " + o.product).join(", ") + ". Limit is 3 per person per day."
+        ? "You've already requested today: " + todays.map(o => o.qty + "x " + o.product).join(", ") + ". The limit is " + limitsInfo.perDay + " per person per day."
         : "";
       ["rHist", "sHist"].forEach(id => {
         const el = $(id);
         el.style.display = (text || banned || res.banned) ? "block" : "none";
-        if (banned || res.banned) el.textContent = "🚫 You are banned from ordering. Speak to the shop owner.";
+        if (banned || res.banned) el.textContent = "You are banned from ordering. Speak to the shop owner.";
         else el.textContent = text;
       });
       $("rSend").disabled = !!(banned || res.banned);
@@ -607,7 +656,7 @@
     $("rErr").textContent = "";
     if (!me) { show("auth"); return; }
     if (!qty || qty < 1) { $("rErr").textContent = "Please enter how many you want."; return; }
-    if (qty > 3) { $("rErr").textContent = "Maximum 3 per order."; return; }
+    if (qty > limitsInfo.perOrder) { $("rErr").textContent = "Maximum " + limitsInfo.perOrder + " per order."; return; }
     if (!$("rAgree").checked) { $("rErr").textContent = "Please tick the disclaimer box."; return; }
     const auth = getAuth();
     sendOrder({ action: "order", email: me.email, token: auth ? auth.token : "", qty, productId: currentProduct.id, deviceId: deviceId() });
@@ -630,8 +679,10 @@
     const errEl = isSpecial ? $("sErr") : $("rErr");
     const cardEl = isSpecial ? $("specialCard") : $("requestCard");
     const doneEl = isSpecial ? $("specialDone") : $("requestDone");
+    const sendBtn = isSpecial ? $("sSend") : $("rSend");
     const btns = cardEl.querySelectorAll("button");
     btns.forEach(b => b.disabled = true);
+    busy(sendBtn, true, "Sending...");
     try {
       const res = await apiPost(payload);
       if (res.error) {
@@ -644,13 +695,14 @@
       cardEl.style.display = "none";
       doneEl.style.display = "block";
       if (!isSpecial && res.total) {
-        $("rDoneText").innerHTML = "Your request for <b>" + esc(me.name) + "</b> has been sent.<br><b>Bring £" + res.total + "</b> with you — exact amount, or no snacks!";
+        $("rDoneText").innerHTML = "Your request for <b>" + esc(me.name) + "</b> has been sent.<br><b>Bring &pound;" + res.total + "</b> with you - exact amount, or no snacks!";
       }
       $("rQty").value = 1; $("rAgree").checked = false;
       $("sWant").value = ""; $("sQty").value = 1; $("sAgree").checked = false;
     } catch (e) {
-      errEl.textContent = "Could not send — check your connection and try again.";
+      errEl.textContent = "Could not send - check your connection and try again.";
     } finally {
+      busy(sendBtn, false);
       btns.forEach(b => b.disabled = false);
     }
   }
@@ -661,7 +713,7 @@
       $("outBtn").style.display = "none";
       return;
     }
-    $("acctChip").textContent = "👋 " + me.name + " · " + me.year + " · " + (me.points || 0) + " pts";
+    $("acctChip").textContent = me.name + " - " + me.year + " - " + (me.points || 0) + " pts";
     $("acctChip").style.display = "inline";
     $("outBtn").style.display = "inline-block";
   }
@@ -683,37 +735,48 @@
     $("aResend").style.display = mode === "code" ? "inline-block" : "none";
     $("aSwitchRow").style.display = mode === "code" ? "none" : "block";
     $("aBtn").textContent = mode === "up" ? "Create account" : mode === "code" ? "Verify" : "Sign in";
-    $("authTitle").textContent = mode === "up" ? "Create your account 🍬" : mode === "code" ? "Check your email 📬" : "Welcome 🍬";
+    $("authTitle").textContent = mode === "up" ? "Create your account" : mode === "code" ? "Check your email" : "Welcome";
     $("authSub").textContent = mode === "up"
-      ? "One account — your requests and leaderboard points are saved under your name."
-      : mode === "code" ? "Enter the 6-digit code we emailed you." : "Sign in to request snacks.";
+      ? "One account - your requests and leaderboard points are saved under your name."
+      : mode === "code" ? "Enter the 6-digit code we emailed you. It can take a minute to arrive." : "Sign in to request snacks.";
     $("aErr").textContent = "";
   }
   function toggleAuthMode() { setAuthMode(authMode === "in" ? "up" : "in"); }
 
   async function authSubmit() {
     $("aErr").textContent = "";
+    const btn = $("aBtn");
     const email = $("aEmail").value.trim();
-    if (authMode === "code") {
-      await doAuth({ action: "verify", email: email, code: $("aCode").value.trim() });
-      return;
-    }
-    if (!email) { $("aErr").textContent = "Please enter your email."; return; }
-    if (!$("aPass").value) { $("aErr").textContent = "Please enter a password."; return; }
-    if (authMode === "up") {
-      const payload = { action: "signup", email: email, password: $("aPass").value, name: $("aName").value.trim(), year: $("aYear").value, deviceId: deviceId() };
-      if (!payload.name) { $("aErr").textContent = "Please enter your full name."; return; }
-      if (!payload.year) { $("aErr").textContent = "Please choose your year group."; return; }
-      try {
-        const res = await apiPost(payload);
-        if (res.error) { $("aErr").textContent = res.error; return; }
-        setAuthMode("code");
-      } catch (e) {
-        $("aErr").textContent = "Could not connect — try again.";
+    try {
+      if (authMode === "code") {
+        if (!email) { $("aErr").textContent = "Please enter your email."; return; }
+        if (!$("aCode").value.trim()) { $("aErr").textContent = "Enter the 6-digit code from your email."; return; }
+        busy(btn, true, "Checking...");
+        await doAuth({ action: "verify", email: email, code: $("aCode").value.trim() });
+        return;
       }
-      return;
+      if (!email) { $("aErr").textContent = "Please enter your email."; return; }
+      if (!$("aPass").value) { $("aErr").textContent = "Please enter a password."; return; }
+      if (authMode === "up") {
+        const payload = { action: "signup", email: email, password: $("aPass").value, name: $("aName").value.trim(), year: $("aYear").value, deviceId: deviceId() };
+        if (!payload.name) { $("aErr").textContent = "Please enter your full name."; return; }
+        if (!payload.year) { $("aErr").textContent = "Please choose your year group."; return; }
+        busy(btn, true, "Creating account...");
+        try {
+          const res = await apiPost(payload);
+          if (res.error) { $("aErr").textContent = res.error; return; }
+          setAuthMode("code");
+          $("aCode").focus();
+        } catch (e) {
+          $("aErr").textContent = "Could not connect - try again.";
+        }
+        return;
+      }
+      busy(btn, true, "Signing in...");
+      await doAuth({ action: "login", email: email, password: $("aPass").value, deviceId: deviceId() });
+    } finally {
+      busy(btn, false);
     }
-    await doAuth({ action: "login", email: email, password: $("aPass").value, deviceId: deviceId() });
   }
 
   async function doAuth(payload) {
@@ -730,17 +793,21 @@
       renderAccount();
       show("shop");
     } catch (e) {
-      $("aErr").textContent = "Could not connect — try again.";
+      $("aErr").textContent = "Could not connect - try again.";
     }
   }
 
   async function resendCode() {
     $("aErr").textContent = "";
+    const btn = $("aResend");
+    busy(btn, true, "Sending...");
     try {
       const res = await apiPost({ action: "resend", email: $("aEmail").value.trim() });
-      $("aErr").textContent = res.ok ? "New code sent — check your email." : (res.error || "Could not resend.");
+      $("aErr").textContent = res.ok ? "New code sent - check your email." : (res.error || "Could not resend.");
     } catch (e) {
-      $("aErr").textContent = "Could not connect — try again.";
+      $("aErr").textContent = "Could not connect - try again.";
+    } finally {
+      busy(btn, false);
     }
   }
 
@@ -753,29 +820,36 @@
   $("adminPass").addEventListener("keydown", e => { if (e.key === "Enter") adminLogin(); });
 
   function adminTab(name) {
-    ["orders", "products", "text", "bans", "accounts"].forEach(t => {
+    ["orders", "products", "text", "bans", "accounts", "limits"].forEach(t => {
       $("tab-" + t).classList.toggle("on", t === name);
       $("ap" + t.charAt(0).toUpperCase() + t.slice(1)).classList.toggle("active", t === name);
     });
   }
 
+  function applyAdminData(d) {
+    if (!d) return;
+    products = d.products || [];
+    settings = d.settings || {};
+    if (d.limits) limitsInfo = { perOrder: d.maxPerOrder || limitsInfo.perOrder, perDay: d.maxPerDay || limitsInfo.perDay };
+    renderShop();
+    renderOrders(d.orders || []);
+    renderBans(d.bans || []);
+    renderAccounts(d.accounts || []);
+    renderLimits(d.limits || [], d.maxPerDay);
+    renderProductsEditor();
+    $("setNote").value = settings.pickup_note || "";
+    $("setSlogan").value = settings.slogan || "";
+  }
+
   async function adminLogin() {
-    if (!isConfigured()) { $("adminErr").textContent = "Backend not set up yet — see the yellow box on the page."; return; }
+    if (!isConfigured()) { $("adminErr").textContent = "Backend not set up yet - see the yellow box on the page."; return; }
     try {
       const res = await apiGet("action=admin&password=" + encodeURIComponent($("adminPass").value));
       if (res.error) { $("adminErr").textContent = res.error; return; }
       isAdmin = true;
-      products = res.products;
-      settings = res.settings;
       hideAdminLogin();
       $("adminBtn").style.display = "none";
-      renderShop();
-      renderOrders(res.orders);
-      renderBans(res.bans || []);
-      renderAccounts(res.accounts || []);
-      renderProductsEditor();
-      $("setNote").value = settings.pickup_note || "";
-      $("setSlogan").value = settings.slogan || "";
+      applyAdminData(res);
       show("admin");
     } catch (e) {
       $("adminErr").textContent = "Could not reach the backend.";
@@ -793,11 +867,11 @@
 
   function orderRowHtml(o, actionable) {
     let btns = "";
-    if (actionable) btns += '<button class="btn ghost small" title="Mark paid & completed" onclick="completeOrder(' + o.row + ')">✅</button> ';
-    btns += '<button class="btn ghost small" title="Delete order" onclick="deleteOrder(' + o.row + ')">🗑️</button>';
-    btns += ' <button class="btn ghost small" title="Ban this pupil" onclick="banOrderRow(' + o.row + ')">🚫</button>';
+    if (actionable) btns += '<button class="btn ghost small" title="Mark paid and completed" onclick="completeOrder(' + o.row + ')">' + IC.done + '</button> ';
+    btns += '<button class="btn ghost small" title="Delete order" onclick="deleteOrder(' + o.row + ')">' + IC.del + '</button> ';
+    btns += '<button class="btn ghost small" title="Ban this pupil" onclick="banOrderRow(' + o.row + ')">' + IC.ban + '</button>';
     return "<tr><td>" + esc(o.time) + "</td><td><b>" + esc(o.name) + "</b></td><td>" + esc(o.year || "") + "</td><td>" + esc(o.product) +
-      (o.special ? ' <span class="special">SPECIAL</span>' : "") + "</td><td>" + esc(o.qty) + "</td><td>£" +
+      (o.special ? ' <span class="special">SPECIAL</span>' : "") + "</td><td>" + esc(o.qty) + "</td><td>&pound;" +
       esc(o.total) + "</td><td>" + esc(o.reason || "") + "</td><td style='white-space:nowrap'>" + btns + "</td></tr>";
   }
 
@@ -827,13 +901,13 @@
   }
 
   async function completeOrder(row) {
-    await adminOp("order_status", { row: row, status: "completed" });
-    await loadAdmin();
+    const res = await adminOp("order_status", { row: row, status: "completed" });
+    applyAdminData(res.data);
   }
   async function deleteOrder(row) {
     if (!confirm("Delete this order?")) return;
-    await adminOp("order_delete", { row: row });
-    await loadAdmin();
+    const res = await adminOp("order_delete", { row: row });
+    applyAdminData(res.data);
   }
   async function banOrderRow(row) {
     const o = adminOrders.find(x => x.row === row);
@@ -841,10 +915,8 @@
     const days = Number($("banDays").value) || 0;
     const label = days > 0 ? days + " day(s)" : "forever";
     if (!confirm("Ban " + o.name + " (name + device + account) for " + label + "?")) return;
-    await adminOp("ban_add", { type: "name", value: o.name, days: days });
-    if (o.device) await adminOp("ban_add", { type: "device", value: o.device, days: days });
-    if (o.email) await adminOp("ban_add", { type: "account", value: o.email, days: days });
-    await loadAdmin();
+    const res = await adminOp("ban_person", { name: o.name, device: o.device, email: o.email, days: days });
+    applyAdminData(res.data);
     adminTab("bans");
   }
 
@@ -857,10 +929,9 @@
     }
     let html = "<tr><th>Type</th><th>Value</th><th>Banned until</th><th></th></tr>";
     adminBans.forEach(b => {
-      const icon = b.type === "device" ? "📱 device" : b.type === "account" ? "📧 account" : "👤 name";
-      const until = b.until ? esc(new Date(b.until).toLocaleString()) : "♾️ forever";
-      html += "<tr><td>" + icon + "</td><td>" + esc(b.value) + "</td><td>" + until +
-        '</td><td><button class="btn ghost small" onclick="removeBan(\'' + esc(b.value).replace(/'/g, "\\'") + '\')">✕</button></td></tr>';
+      const until = b.until ? esc(new Date(b.until).toLocaleString()) : "forever";
+      html += "<tr><td>" + esc(b.type) + "</td><td>" + esc(b.value) + "</td><td>" + until +
+        '</td><td><button class="btn ghost small" onclick="removeBan(\'' + esc(b.value).replace(/'/g, "\\'") + '\')">Remove</button></td></tr>';
     });
     t.innerHTML = html;
   }
@@ -868,14 +939,14 @@
   async function addBan() {
     const v = $("banValue").value.trim();
     if (!v) return;
-    await adminOp("ban_add", { type: $("banType").value, value: v, days: Number($("banDays").value) || 0 });
+    const res = await adminOp("ban_add", { type: $("banType").value, value: v, days: Number($("banDays").value) || 0 });
     $("banValue").value = "";
-    await loadAdmin();
+    applyAdminData(res.data);
   }
 
   async function removeBan(value) {
-    await adminOp("ban_remove", { value: value });
-    await loadAdmin();
+    const res = await adminOp("ban_remove", { value: value });
+    applyAdminData(res.data);
   }
 
   function renderAccounts(accounts) {
@@ -889,7 +960,7 @@
     list.forEach(a => {
       const until = a.bannedUntil ? esc(new Date(a.bannedUntil).toLocaleString()) : "";
       html += "<tr><td><b>" + esc(a.name) + "</b></td><td>" + esc(a.year) + "</td><td>" + esc(a.email) + "</td><td>" + a.points + "</td><td>" + until +
-        '</td><td><button class="btn ghost small" title="Ban this account" onclick="banAccountEmail(\'' + esc(a.email).replace(/'/g, "\\'") + '\')">🚫</button></td></tr>';
+        '</td><td><button class="btn ghost small" title="Ban this account" onclick="banAccountEmail(\'' + esc(a.email).replace(/'/g, "\\'") + '\')">Ban</button></td></tr>';
     });
     t.innerHTML = html;
   }
@@ -898,14 +969,37 @@
     const days = Number($("banDays").value) || 0;
     const label = days > 0 ? days + " day(s)" : "forever";
     if (!confirm("Ban account " + email + " for " + label + "?")) return;
-    await adminOp("ban_add", { type: "account", value: email, days: days });
-    await loadAdmin();
+    const res = await adminOp("ban_add", { type: "account", value: email, days: days });
+    applyAdminData(res.data);
+  }
+
+  function renderLimits(usage, maxPerDay) {
+    const t = $("limitsTable");
+    const list = usage || [];
+    const cap = maxPerDay || limitsInfo.perDay || 3;
+    if (!list.length) {
+      t.innerHTML = '<tr><td style="color:var(--muted)">No requests today yet.</td></tr>';
+      return;
+    }
+    let html = "<tr><th>Name</th><th>Email</th><th>Requested today</th><th>Left today</th><th></th></tr>";
+    list.forEach(u => {
+      const left = Math.max(0, cap + (u.extra || 0) - u.used);
+      html += "<tr><td><b>" + esc(u.name || "?") + "</b></td><td>" + esc(u.email || "-") + "</td><td>" + u.used + "</td><td>" + left + "</td>" +
+        '<td><button class="btn ghost small" onclick="resetLimit(\'' + esc(u.key).replace(/'/g, "\\'") + '\')">Reset</button></td></tr>';
+    });
+    t.innerHTML = html;
+  }
+
+  async function resetLimit(key) {
+    if (!confirm("Give this pupil a fresh daily limit for today?")) return;
+    const res = await adminOp("limit_reset", { key: key });
+    applyAdminData(res.data);
   }
 
   async function newSeason() {
     if (!confirm("Reset everyone's points to 0 and start a new season?")) return;
-    await adminOp("new_season");
-    await loadAdmin();
+    const res = await adminOp("new_season");
+    applyAdminData(res.data);
   }
 
   function renderProductsEditor() {
@@ -913,13 +1007,13 @@
     let html = "<tr><th style='width:18%'>Name</th><th style='width:9%'>Price</th><th style='width:22%'>Description</th><th style='width:18%'>Allergens (comma-separated)</th><th style='width:22%'>Photo URL</th><th style='width:8%'>Visible</th><th></th></tr>";
     products.forEach((p, i) => {
       html += "<tr>" +
-        "<td><input data-i='" + i + "' data-k='name' value=\"" + esc(p.name) + '"></td>' +
-        "<td><input data-i='" + i + "' data-k='price' type='number' step='0.01' value=\"" + p.price + '"></td>' +
-        "<td><input data-i='" + i + "' data-k='description' value=\"" + esc(p.description) + '"></td>' +
-        "<td><input data-i='" + i + "' data-k='allergens' value=\"" + esc(p.allergens) + '"></td>' +
-        "<td><input data-i='" + i + "' data-k='photo' value=\"" + esc(p.photo) + '"></td>' +
+        "<td><input data-i='" + i + "' data-k='name' value=\"" + esc(p.name) + '\"></td>' +
+        "<td><input data-i='" + i + "' data-k='price' type='number' step='0.01' value=\"" + p.price + '\"></td>' +
+        "<td><input data-i='" + i + "' data-k='description' value=\"" + esc(p.description) + '\"></td>' +
+        "<td><input data-i='" + i + "' data-k='allergens' value=\"" + esc(p.allergens) + '\"></td>' +
+        "<td><input data-i='" + i + "' data-k='photo' value=\"" + esc(p.photo) + '\"></td>' +
         "<td><select data-i='" + i + "' data-k='visible'><option value='true'" + (p.visible ? " selected" : "") + ">Yes</option><option value='false'" + (!p.visible ? " selected" : "") + ">No</option></select></td>" +
-        "<td><button class='btn ghost small' onclick='removeRow(" + i + ")'>✕</button></td></tr>";
+        "<td><button class='btn ghost small' onclick='removeRow(" + i + ")'>Remove</button></td></tr>";
     });
     t.innerHTML = html;
   }
@@ -947,67 +1041,85 @@
   }
 
   async function saveProducts() {
-    $("prodMsg").textContent = "Saving…";
-    const res = await adminOp("save_products", { products: collectProducts() });
-    $("prodMsg").textContent = res.ok ? "✅ Saved — live for everyone!" : ("⚠️ " + (res.error || "Save failed"));
-    if (res.ok) { await loadMenu(); renderShop(); }
+    $("prodMsg").textContent = "Saving...";
+    try {
+      const res = await adminOp("save_products", { products: collectProducts() });
+      $("prodMsg").textContent = res.ok ? "Saved - live for everyone!" : (res.error || "Save failed");
+      if (res.ok) applyAdminData(res.data);
+    } catch (e) {
+      $("prodMsg").textContent = "Could not connect - try again.";
+    }
   }
 
   async function saveSettings() {
-    $("setMsg").textContent = "Saving…";
-    const res = await adminOp("save_settings", { settings: { pickup_note: $("setNote").value, slogan: $("setSlogan").value } });
-    $("setMsg").textContent = res.ok ? "✅ Saved — live for everyone!" : ("⚠️ " + (res.error || "Save failed"));
-    if (res.ok) { settings.pickup_note = $("setNote").value; settings.slogan = $("setSlogan").value; renderShop(); }
+    $("setMsg").textContent = "Saving...";
+    try {
+      const res = await adminOp("save_settings", { settings: { pickup_note: $("setNote").value, slogan: $("setSlogan").value } });
+      $("setMsg").textContent = res.ok ? "Saved - live for everyone!" : (res.error || "Save failed");
+      if (res.ok) applyAdminData(res.data);
+    } catch (e) {
+      $("setMsg").textContent = "Could not connect - try again.";
+    }
   }
 
   async function loadAdmin() {
-    const res = await apiGet("action=admin&password=" + encodeURIComponent($("adminPass").value));
-    if (res.error) return;
-    products = res.products;
-    settings = res.settings;
-    renderOrders(res.orders);
-    renderBans(res.bans || []);
-    renderAccounts(res.accounts || []);
-    renderProductsEditor();
-    $("setNote").value = settings.pickup_note || "";
-    $("setSlogan").value = settings.slogan || "";
+    try {
+      const res = await apiGet("action=admin&password=" + encodeURIComponent($("adminPass").value));
+      if (res.error) return;
+      applyAdminData(res);
+    } catch (e) {}
   }
 
-  async function loadMenu() {
-    if (!isConfigured()) {
-      $("setupWarn").style.display = "block";
-      return;
-    }
+  function cachedMenu() {
     try {
-      const res = await apiGet("action=menu");
-      if (res.ok) {
-        products = res.products;
-        settings = res.settings;
-        leaders = res.leaderboard || [];
-        renderShop();
-        renderLeaderboard();
-      }
-    } catch (e) {
-      $("setupWarn").style.display = "block";
+      const c = JSON.parse(localStorage.getItem("pp_menu") || "null");
+      if (c && c.d && Date.now() - c.t < 600000) return c.d;
+    } catch (e) {}
+    return null;
+  }
+
+  function applyMenu(d, keepCache) {
+    products = d.products || [];
+    settings = d.settings || {};
+    leaders = d.leaderboard || [];
+    if (d.limits) limitsInfo = d.limits;
+    if (!keepCache) {
+      try { localStorage.setItem("pp_menu", JSON.stringify({ t: Date.now(), d: { products: products, settings: settings, leaderboard: leaders, limits: limitsInfo } })); } catch (e) {}
     }
+    renderShop();
+    renderLeaderboard();
   }
 
   (async function boot() {
-    await loadMenu();
+    const c = cachedMenu();
+    if (c) {
+      products = c.products || [];
+      settings = c.settings || {};
+      leaders = c.leaderboard || [];
+      limitsInfo = c.limits || limitsInfo;
+      renderShop();
+      renderLeaderboard();
+    }
     const auth = getAuth();
-    if (auth && auth.email && auth.token) {
-      try {
-        const res = await apiGet("action=me&email=" + encodeURIComponent(auth.email) + "&token=" + encodeURIComponent(auth.token));
-        if (res.ok) {
+    try {
+      let url = "action=boot";
+      if (auth && auth.email && auth.token) url += "&email=" + encodeURIComponent(auth.email) + "&token=" + encodeURIComponent(auth.token);
+      const res = await apiGet(url);
+      if (res.ok) {
+        applyMenu(res);
+        if (res.auth && res.account) {
           me = res.account;
           renderAccount();
           show("shop");
           return;
         }
-      } catch (e) {}
-      clearAuthStore();
+      }
+    } catch (e) {
+      if (!c) $("setupWarn").style.display = "block";
     }
-    show("auth");
+    if (!me && auth) clearAuthStore();
+    if (!c) renderShop();
+    show(me ? "shop" : "auth");
   })();
 </script>
 </body>
